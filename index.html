@@ -6,6 +6,7 @@
     <title>Rock Paper Scissors!</title>
 </head>
 <body>
+    <h1>Play Rock Paper Scissors with Me!</h1>
     <script>
         // fcn getComputerChoice
         function getComputerChoice() {
@@ -15,11 +16,87 @@
             } else if ((num >= 0.33) && (num <= 0.67)) {
                 return "paper";
             } else {
-                return "scissors"
+                return "scissors";
+            }
+        }
+        //console.log(getComputerChoice());
+
+        // define fcn getHumanChoice
+        function getHumanChoice() {
+            let choice = prompt("Pick one: Rock, Paper, or Scissors?");
+
+            if (choice === null) {
+                console.log("Ok, maybe we'll play next time. :(");
+                getHumanChoice();
+            } else if (choice.toLowerCase() === "") {
+                console.log("Type in your choice please!");
+                getHumanChoice();
+            } else if (choice.toLowerCase() === "rock") {
+                console.log("You've selected Rock!");
+                return "rock";
+            } else if (choice.toLowerCase() === "paper") {
+                console.log("You've selected Paper!");
+                return "paper";
+            } else if (choice.toLowerCase() === "scissors") {
+                console.log("You've selected Scissors!");
+                return "scissors";
+            } else {
+                console.log("Please type in the correct choices only!");
+                getHumanChoice();
             }
         }
 
-        console.log(getComputerChoice());
+        // fcn selectNum
+        // Assigns a number value to the choices made by human/computer
+        function selectNum(choice) {
+            if (choice === "paper") {
+                return 0;
+            } else if (choice === "rock") {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+
+        // fcn playGame
+        function playGame() {
+            // initialize
+            let humanScore = 0;
+            let computerScore = 0;
+
+            // fcn playRound
+            function playRound(humanChoice, computerChoice) {
+                // assign a number to both choices
+                let humanNum = selectNum(humanChoice);
+                let compNum = selectNum(computerChoice);
+                let diff = humanNum - compNum;
+                if (humanNum - compNum === 0) {
+                    console.log("You draw!")
+                } else if ((diff < 0) && (diff != -2) || (diff === 2) ) {
+                    console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
+                    humanScore++;
+                } else {
+                    console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+                    computerScore++;
+                }
+            }
+
+            // initialize
+            let humanSelection;
+            let computerSelection;
+            // run 5 times
+            for (let i = 0; i < 5; i++) {
+                humanSelection = getHumanChoice();
+                computerSelection = getComputerChoice();
+                playRound(humanSelection, computerSelection);
+            }
+
+            console.log(`In this game, you won ${humanScore} times, while the computer won 
+            ${computerScore} time. You drew ${5-(humanScore+computerScore)} times.`);
+        }
+
+        // call the game function
+        playGame();
     </script>
 </body>
 </html>
