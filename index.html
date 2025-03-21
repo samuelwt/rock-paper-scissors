@@ -73,6 +73,14 @@
             let humanScore = 0;
             let computerScore = 0;
 
+            // Add event listeners to call playRound
+            // use JS event delegation as in the following website:
+            // https://www.javascripttutorial.net/javascript-dom/javascript-event-delegation/
+            const rpsButtons = document.querySelector("#buttons");
+            const playerChoice = document.querySelector("#playerChoice"); 
+            const runningScore = document.querySelector("#runningScore");
+            const whoWon = document.querySelector("#whoWon");
+
             // fcn playRound
             function playRound(humanChoice, computerChoice) {
                 // assign a number to both choices
@@ -93,22 +101,16 @@
                 }
             };
 
-            // Add event listeners to call playRound
-            // use JS event delegation as in the following website:
-            // https://www.javascripttutorial.net/javascript-dom/javascript-event-delegation/
-            const rpsButtons = document.querySelector("#buttons");
-            const playerChoice = document.querySelector("#playerChoice"); 
-            const runningScore = document.querySelector("#runningScore");
-            const whoWon = document.querySelector("#whoWon");
-
-            let playerSelection;
+            let playerSelection = 'undefined';
 
             rpsButtons.addEventListener('click', function(event) {
                 let target = event.target;
 
+                playerChoice.textContent = `Pick one of the options for this round!`;
+
                 switch(target.id) {
                     case 'rock':
-                        playerSelection = 'rock';
+                        playerSelection = 'rock'
                         break;
                     case 'paper':
                         playerSelection = 'paper';
@@ -119,20 +121,19 @@
                 }
 
                 // DOM Method to display selected attack
+                playRound(playerSelection, getComputerChoice());
                 playerChoice.textContent = `You chose ${playerSelection}!`;
-
-            });
-
-            // initialize
-            let computerSelection;
-            // run until someone reaches 5 points
-            while ((humanScore < 5) && (computerScore < 5)) {
-                playerChoice.textContent = "Pick one of the options for this round!";
-                computerSelection = getComputerChoice();
-                playRound(playerSelection, computerSelection);
-                runningScore.textContent = `The current score is as follows: 
+                runningScore.textContent = `The current score is as follows:
                 You: ${humanScore} vs Computer: ${computerScore}`;
-            };
+
+                if ((humanScore > 4) || (computerScore > 4)) {
+                    if (humanScore > 4) {
+                        alert(`Game Over! You won with a score of ${humanScore} to ${computerScore}.`);
+                    } else {
+                        alert(`Game Over! You lost with a score of ${humanScore} to ${computerScore}.`);
+                    }
+                }
+            });
 
             console.log(`In this game, you won ${humanScore} times, while the computer won 
             ${computerScore} time. You drew ${5-(humanScore+computerScore)} times.`);
