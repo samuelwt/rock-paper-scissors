@@ -14,6 +14,7 @@
         <button id="scissors">Scissors</button>
     </div>
     <div id="playerChoice"></div>
+    <div id="whoWon"></div>
     <div id="runningScore"></div>
     <script>
         // fcn getComputerChoice
@@ -79,12 +80,15 @@
                 let compNum = selectNum(computerChoice);
                 let diff = humanNum - compNum;
                 if (humanNum - compNum === 0) {
-                    console.log("You draw!")
+                    //console.log("You draw!")
+                    whoWon.textContent = "You draw!";
                 } else if ((diff < 0) && (diff != -2) || (diff === 2) ) {
-                    console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
+                    //console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
+                    whoWon.textContent = `You won this round! ${humanChoice} beats ${computerChoice}.`;
                     humanScore++;
                 } else {
-                    console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+                    //console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+                    whoWon.textContent = `You lost this round! ${computerChoice} beats ${humanChoice}.`;
                     computerScore++;
                 }
             };
@@ -94,6 +98,8 @@
             // https://www.javascripttutorial.net/javascript-dom/javascript-event-delegation/
             const rpsButtons = document.querySelector("#buttons");
             const playerChoice = document.querySelector("#playerChoice"); 
+            const runningScore = document.querySelector("#runningScore");
+            const whoWon = document.querySelector("#whoWon");
 
             let playerSelection;
 
@@ -118,14 +124,15 @@
             });
 
             // initialize
-            let humanSelection;
             let computerSelection;
-            // run 5 times
-            //for (let i = 0; i < 5; i++) {
-            //    humanSelection = getHumanChoice();
-            //    computerSelection = getComputerChoice();
-            //    playRound(humanSelection, computerSelection);
-            //}
+            // run until someone reaches 5 points
+            while ((humanScore < 5) && (computerScore < 5)) {
+                playerChoice.textContent = "Pick one of the options for this round!";
+                computerSelection = getComputerChoice();
+                playRound(playerSelection, computerSelection);
+                runningScore.textContent = `The current score is as follows: 
+                You: ${humanScore} vs Computer: ${computerScore}`;
+            };
 
             console.log(`In this game, you won ${humanScore} times, while the computer won 
             ${computerScore} time. You drew ${5-(humanScore+computerScore)} times.`);
