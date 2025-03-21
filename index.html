@@ -7,6 +7,14 @@
 </head>
 <body>
     <h1>Play Rock Paper Scissors with Me!</h1>
+    <h2>Pick one of the following:</h2>
+    <div id="buttons">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+    <div id="playerChoice"></div>
+    <div id="runningScore"></div>
     <script>
         // fcn getComputerChoice
         function getComputerChoice() {
@@ -79,17 +87,45 @@
                     console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
                     computerScore++;
                 }
-            }
+            };
+
+            // Add event listeners to call playRound
+            // use JS event delegation as in the following website:
+            // https://www.javascripttutorial.net/javascript-dom/javascript-event-delegation/
+            const rpsButtons = document.querySelector("#buttons");
+            const playerChoice = document.querySelector("#playerChoice"); 
+
+            let playerSelection;
+
+            rpsButtons.addEventListener('click', function(event) {
+                let target = event.target;
+
+                switch(target.id) {
+                    case 'rock':
+                        playerSelection = 'rock';
+                        break;
+                    case 'paper':
+                        playerSelection = 'paper';
+                        break;
+                    case 'scissors':
+                        playerSelection = 'scissors';
+                        break;
+                }
+
+                // DOM Method to display selected attack
+                playerChoice.textContent = `You chose ${playerSelection}!`;
+
+            });
 
             // initialize
             let humanSelection;
             let computerSelection;
             // run 5 times
-            for (let i = 0; i < 5; i++) {
-                humanSelection = getHumanChoice();
-                computerSelection = getComputerChoice();
-                playRound(humanSelection, computerSelection);
-            }
+            //for (let i = 0; i < 5; i++) {
+            //    humanSelection = getHumanChoice();
+            //    computerSelection = getComputerChoice();
+            //    playRound(humanSelection, computerSelection);
+            //}
 
             console.log(`In this game, you won ${humanScore} times, while the computer won 
             ${computerScore} time. You drew ${5-(humanScore+computerScore)} times.`);
